@@ -1,0 +1,17 @@
+// Kung may internet kag may kuryente,
+// pwede ka maka-online class.
+// Pero kung wala,
+// hulata anay nga maayos.
+
+function onlineClass() {
+    let mayInternet = true;
+    let mayKuryente = true;
+
+    if (mayInternet && mayKuryente) {
+        console.log("Ready na para sa online class!");
+    } else {
+        console.log("Hulata anay ang internet ukon kuryente.");
+    }
+}
+
+onlineClass();
