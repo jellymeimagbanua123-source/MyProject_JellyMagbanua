@@ -1,0 +1,191 @@
+# main.py
+# Entry point — displays the menu and calls the appropriate view function.
+
+from views import (
+    show_all_books,
+    borrow_book,
+    return_book,
+    show_available_books,
+    show_borrowed_books,
+)
+
+
+def display_menu():
+    """Print the main menu options."""
+    print("\n╔══════════════════════════════╗")
+    print("║   📚 LIBRARY BORROWING SYSTEM  ║")
+    print("╠══════════════════════════════╣")
+    print("║  1. Show all books             ║")
+    print("║  2. Borrow a book              ║")
+    print("║  3. Return a book              ║")
+    print("║  4. Show available books       ║")
+    print("║  5. Show borrowed books        ║")
+    print("║  6. Exit                       ║")
+    print("╚══════════════════════════════╝")
+
+
+def main():
+    """Main loop — keeps running until the user selects Exit."""
+    while True:
+        display_menu()
+        choice = input("Enter your choice (1-6): ").strip()
+
+        if choice == "1":
+            show_all_books()
+        elif choice == "2":
+            borrow_book()
+        elif choice == "3":
+            return_book()
+        elif choice == "4":
+            show_available_books()
+        elif choice == "5":
+            show_borrowed_books()
+        elif choice == "6":
+            print("\nGoodbye! 👋")
+            break
+        else:
+            print("❌ Invalid choice. Please enter a number between 1 and 6.")
+
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+
+
+
+
+# models.py
+# Defines the Book data structure and the initial catalog (sample data)
+
+class Book:
+    """
+    Represents a single book in the library.
+
+    Attributes:
+        title (str): The title of the book.
+        author (str): The name of the author.
+        is_borrowed (bool): True if the book is currently borrowed, False if available.
+        borrowed_by (str or None): The name of the student who borrowed it, or None if available.
+    """
+
+    def __init__(self, title, author):
+        self.title = title
+        self.author = author
+        self.is_borrowed = False      # All books start as available
+        self.borrowed_by = None       # No borrower by default
+
+    def __str__(self):
+        status = f"Borrowed by {self.borrowed_by}" if self.is_borrowed else "Available"
+        return f"'{self.title}' by {self.author} — {status}"
+
+
+# ── Sample Data ────────────────────────────────────────────────────────────────
+# The catalog is a list of Book objects pre-loaded with sample entries.
+
+catalog = [
+    Book("Python Basics",       "Ana Cruz"),
+    Book("Django for Students", "Mark Reyes"),
+    Book("Data Structures",     "Lea Santos"),
+]
+
+
+
+
+# views.py
+# Contains all functions that manipulate the book catalog.
+# Data (catalog) is imported from models.py — no data is defined here.
+
+from models import catalog
+
+
+def show_all_books():
+    """Display every book in the catalog with its status."""
+    print("\n📚 ALL BOOKS")
+    print("-" * 40)
+    if not catalog:
+        print("No books in the library.")
+    else:
+        for i, book in enumerate(catalog, start=1):
+            status = f"Borrowed by {book.borrowed_by}" if book.is_borrowed else "Available"
+            print(f"{i}. '{book.title}' by {book.author} — {status}")
+    print("-" * 40)
+
+
+def borrow_book():
+    """Mark a book as borrowed by a student."""
+    print("\n📖 BORROW A BOOK")
+    title = input("Enter the book title: ").strip()
+    if not title:
+        print("❌ Book title cannot be empty.")
+        return
+
+    # Case-insensitive search
+    for book in catalog:
+        if book.title.lower() == title.lower():
+            if book.is_borrowed:
+                print(f"❌ This book is already borrowed by {book.borrowed_by}.")
+            else:
+                student = input("Enter your name: ").strip()
+                if not student:
+                    print("❌ Student name cannot be empty.")
+                    return
+                book.is_borrowed = True
+                book.borrowed_by = student
+                print(f"✅ You have successfully borrowed '{book.title}'.")
+            return
+
+    print("❌ Book not found.")
+
+
+def return_book():
+    """Mark a borrowed book as returned."""
+    print("\n🔄 RETURN A BOOK")
+    title = input("Enter the book title: ").strip()
+    if not title:
+        print("❌ Book title cannot be empty.")
+        return
+
+    # Case-insensitive search
+    for book in catalog:
+        if book.title.lower() == title.lower():
+            if not book.is_borrowed:
+                print("❌ This book is not currently borrowed.")
+            else:
+                book.is_borrowed = False
+                book.borrowed_by = None
+                print(f"✅ The book '{book.title}' has been returned successfully.")
+            return
+
+    print("❌ Book not found.")
+
+
+def show_available_books():
+    """Display only books that are not currently borrowed."""
+    print("\n✅ AVAILABLE BOOKS")
+    print("-" * 40)
+    available = [book for book in catalog if not book.is_borrowed]
+    if not available:
+        print("No books are currently available.")
+    else:
+        for i, book in enumerate(available, start=1):
+            print(f"{i}. '{book.title}' by {book.author}")
+    print("-" * 40)
+
+
+def show_borrowed_books():
+    """Display only books that are currently borrowed."""
+    print("\n🔖 BORROWED BOOKS")
+    print("-" * 40)
+    borrowed = sorted(
+        [book for book in catalog if book.is_borrowed],
+        key=lambda b: b.title
+    )
+    if not borrowed:
+        print("No books are currently borrowed.")
+    else:
+        for i, book in enumerate(borrowed, start=1):
+            print(f"{i}. '{book.title}' by {book.author} — Borrowed by: {book.borrowed_by}")
+    print("-" * 40)
