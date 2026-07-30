@@ -1,0 +1,45 @@
+// ============================================================
+//  Manila Flash Flood Delivery Rush
+//  filterSafeDeliveries — filters and formats safe routes
+// ============================================================
+
+// ===== SAMPLE INPUT DATA =====
+const deliveryQueue = [
+    { orderId: 101, customer: "Mateo",  location: "España",           isFlooded: true  },
+    { orderId: 102, customer: "Joshua", location: "BGC",              isFlooded: false },
+    { orderId: 103, customer: "Sofia",  location: "Taft Avenue",      isFlooded: true  },
+    { orderId: 104, customer: "Lukas",  location: "Makati Legazpi",   isFlooded: false },
+    { orderId: 105, customer: "Elena",  location: "Araneta Avenue",   isFlooded: true  },
+    { orderId: 106, customer: "Amelie", location: "Ortigas Center",   isFlooded: false },
+];
+
+// ===== FUNCTION =====
+function filterSafeDeliveries(queue) {
+
+    return queue
+        // STEP 1: Keep only entries where isFlooded is false
+        .filter(function(order) {
+            return order.isFlooded === false;
+        })
+        // STEP 2: Format each safe order into a dispatch string
+        .map(function(order) {
+            return "DISPATCH: Order #" + order.orderId +
+                   " for " + order.customer +
+                   " to " + order.location;
+        });
+}
+
+// ===== RUN AND DISPLAY =====
+const safeDeliveries = filterSafeDeliveries(deliveryQueue);
+
+console.log("====================================");
+console.log("   SAFE DELIVERIES — DISPATCH LIST");
+console.log("====================================");
+
+safeDeliveries.forEach(function(dispatch) {
+    console.log("  " + dispatch);
+});
+
+console.log("====================================");
+console.log("  Total safe deliveries: " + safeDeliveries.length);
+console.log("====================================");
