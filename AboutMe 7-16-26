@@ -1,0 +1,89 @@
+#include <stdio.h>
+#include <string.h>
+
+/* ================================================
+   ABOUT ME - PROFILE SHEET
+   Name   : Jelly Mei Espadera Magbanuua
+   ================================================ */
+
+/* ===== FUNCTION 1: Display the profile ===== */
+void displayProfile(int petChoice,
+                    char *fullName, char *nickname,
+                    char *birthday, char *address,
+                    char *favSong,  char *motivation,
+                    char *support)
+{
+    if (petChoice == 1) {
+        printf("  /\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\\n");
+        printf("         ABOUT ME - PROFILE SHEET\n");
+        printf("               ~ Dog Person ~\n");
+        printf("  \\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\n");
+    } else {
+        printf("  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~\n");
+        printf("         ABOUT ME - PROFILE SHEET\n");
+        printf("               ~ Cat Person ~\n");
+        printf("  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~\n");
+    }
+
+    printf("\n");
+    printf("  Name       : %s / %s\n", fullName, nickname);
+    printf("  Birthday   : %s\n",      birthday);
+    printf("  Address    : %s\n",      address);
+    printf("  Fav Song   : %s\n",      favSong);
+    printf("  Motivation : %s\n",      motivation);
+    printf("  Support    : %s\n",      support);
+    printf("\n");
+
+    if (petChoice == 1) {
+        printf("  /\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\\n");
+    } else {
+        printf("  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~\n");
+    }
+
+    printf("\n");
+}
+
+/* ===== FUNCTION 2: Load profile data ===== */
+void loadProfile(int *petChoice,
+                 char *fullName, char *nickname,
+                 char *birthday, char *address,
+                 char *favSong,  char *motivation,
+                 char *support)
+{
+    *petChoice = 1;   /* 1 = Dog person, 2 = Cat person */
+
+    strcpy(fullName,   "Jelly Mei Espadera Magbanuua");
+    strcpy(nickname,   "Mei");
+    strcpy(birthday,   "09/18/2005");
+    strcpy(address,    "Molo Boulevard, Iloilo City");
+    strcpy(favSong,    "Glue Song by beabadoobee");
+    strcpy(motivation, "Future and Loved Ones");
+    strcpy(support,    "My Family");
+}
+
+/* ===== MAIN ===== */
+int main()
+{
+    int  petChoice;
+    char fullName[100];
+    char nickname[50];
+    char birthday[20];
+    char address[150];
+    char favSong[150];
+    char motivation[250];
+    char support[250];
+
+    loadProfile(&petChoice,
+                fullName, nickname,
+                birthday, address,
+                favSong, motivation,
+                support);
+
+    displayProfile(petChoice,
+                   fullName, nickname,
+                   birthday, address,
+                   favSong, motivation,
+                   support);
+
+    return 0;
+}
