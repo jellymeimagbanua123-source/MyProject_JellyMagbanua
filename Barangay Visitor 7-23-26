@@ -1,0 +1,61 @@
+# ============================================================
+#  BARANGAY VISITOR LOG
+#  Demonstrates: input(), list, loop, storing simple records
+# ============================================================
+
+# ===== STEP 1: Create an empty list =====
+visitors = []
+
+print("=" * 50)
+print("      BARANGAY HALL — VISITOR LOG SYSTEM")
+print("=" * 50)
+
+# ===== STEP 2-6: Loop to collect visitor info =====
+while True:
+
+    print(f"\n  Visitor #{len(visitors) + 1}")
+    print("  " + "-" * 30)
+
+    # STEP 2: Ask for visitor name
+    name = input("  Enter visitor name    : ").strip()
+    while not name:
+        print("  Name cannot be empty!")
+        name = input("  Enter visitor name    : ").strip()
+
+    # STEP 3: Ask for visitor purpose
+    purpose = input("  Enter purpose of visit: ").strip()
+    while not purpose:
+        print("  Purpose cannot be empty!")
+        purpose = input("  Enter purpose of visit: ").strip()
+
+    # STEP 4: Save into the visitors list
+    visitors.append({
+        "name":    name,
+        "purpose": purpose
+    })
+
+    print(f"\n  Visitor '{name}' has been recorded.")
+
+    # STEP 5: Ask if another visitor will be added
+    again = input("\n  Add another visitor? (yes/no): ").strip().lower()
+
+    # STEP 6: If NO, stop the loop
+    if again != "yes" and again != "y":
+        break
+
+# ===== STEP 7: Display all recorded visitors =====
+print("\n")
+print("=" * 50)
+print("         RECORDED VISITORS")
+print("=" * 50)
+
+for i, visitor in enumerate(visitors, start=1):
+    print(f"  {i}. Name    : {visitor['name']}")
+    print(f"     Purpose : {visitor['purpose']}")
+    print()
+
+# ===== STEP 8: Display total number of visitors =====
+print("=" * 50)
+print(f"  TOTAL VISITORS RECORDED: {len(visitors)}")
+print("=" * 50)
+print("\n  Thank you! End of visitor log.\n")
