@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            padding: 40px 16px;
+            color: #e0e0e0;
+        }
+
+        .container { max-width: 640px; margin: 0 auto; }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+        .header-sub {
+            text-align: center;
+            color: #7a9abf;
+            font-size: 13px;
+            margin-bottom: 28px;
+        }
+
+        /* STATS */
+        .stats { display: flex; gap: 10px; margin-bottom: 20px; }
+        .stat-box {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 10px 0;
+            text-align: center;
+            flex: 1;
+        }
+        .stat-box .num { font-size: 22px; font-weight: 800; color: #5b9bd5; }
+        .stat-box .lbl { font-size: 10px; color: #7a9abf; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* ADD FORM */
+        .add-form {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .add-form h2 {
+            font-size: 13px; font-weight: 700; color: #7a9abf;
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px;
+        }
+        .form-row { display: flex; gap: 8px; margin-bottom: 10px; }
+        .form-row input,
+        .form-row select,
+        .add-form textarea {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-family: inherit;
+            font-size: 13px;
+            padding: 9px 12px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .form-row input:focus,
+        .form-row select:focus,
+        .add-form textarea:focus { border-color: #5b9bd5; }
+        .form-row input { flex: 1; }
+        .form-row select { width: 120px; }
+        .form-row select option { background: #1a1a2e; }
+        .add-form textarea {
+            width: 100%; resize: vertical; min-height: 60px; margin-bottom: 10px;
+        }
+        .btn-add {
+            background: #5b9bd5; color: #fff; border: none;
+            border-radius: 8px; padding: 9px 20px;
+            font-size: 13px; font-weight: 700; cursor: pointer;
+            transition: background 0.2s; white-space: nowrap;
+        }
+        .btn-add:hover { background: #4a88c0; }
+
+        /* FILTERS */
+        .filters {
+            display: flex; gap: 6px; margin-bottom: 14px;
+            flex-wrap: wrap; align-items: center;
+        }
+        .filter-btn {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 20px; color: #9ab8d5;
+            font-size: 12px; font-weight: 600;
+            padding: 5px 16px; cursor: pointer;
+            text-decoration: none; transition: all 0.15s;
+        }
+        .filter-btn:hover { background: rgba(91,155,213,0.2); }
+        .filter-btn.active { background: #5b9bd5; color: #fff; border-color: #5b9bd5; }
+        .btn-clear {
+            margin-left: auto;
+            background: rgba(220,80,80,0.15);
+            border: 1px solid rgba(220,80,80,0.3);
+            border-radius: 20px; color: #e07070;
+            font-size: 12px; font-weight: 600;
+            padding: 5px 14px; cursor: pointer;
+            text-decoration: none; transition: all 0.15s;
+        }
+        .btn-clear:hover { background: rgba(220,80,80,0.3); }
+
+        /* TASK LIST */
+        .task-list { display: flex; flex-direction: column; gap: 8px; }
+        .task-item {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px; padding: 14px 16px;
+            display: flex; align-items: flex-start;
+            gap: 12px; transition: background 0.15s;
+        }
+        .task-item:hover { background: rgba(255,255,255,0.09); }
+        .task-item.done { opacity: 0.5; }
+        .task-item.done .task-title { text-decoration: line-through; color: #7a9abf; }
+        .task-item.priority-high   { border-left: 3px solid #e07070; }
+        .task-item.priority-medium { border-left: 3px solid #e0c070; }
+        .task-item.priority-low    { border-left: 3px solid #70c070; }
+
+        .task-check {
+            width: 20px; height: 20px; accent-color: #5b9bd5;
+            cursor: pointer; margin-top: 2px; flex-shrink: 0;
+        }
+        .task-body { flex: 1; min-width: 0; }
+        .task-title { font-size: 14px; font-weight: 700; color: #e8e8e8; word-break: break-word; }
+        .task-desc  { font-size: 12px; color: #7a9abf; margin-top: 3px; word-break: break-word; }
+        .task-meta  { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+        .badge {
+            font-size: 10px; font-weight: 700; padding: 2px 8px;
+            border-radius: 10px; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .badge-high   { background: rgba(224,112,112,0.2); color: #e09090; }
+        .badge-medium { background: rgba(224,192,112,0.2); color: #e0c890; }
+        .badge-low    { background: rgba(112,192,112,0.2); color: #90c890; }
+        .task-date { font-size: 10px; color: #5a7a9a; }
+
+        .task-actions { display: flex; gap: 6px; flex-shrink: 0; }
+        .btn-icon {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 7px; color: #9ab8d5;
+            font-size: 13px; padding: 5px 9px; cursor: pointer;
+            text-decoration: none; transition: all 0.15s;
+            display: flex; align-items: center; font-family: inherit;
+        }
+        .btn-icon:hover { background: rgba(255,255,255,0.15); }
+        .btn-icon.del:hover { background: rgba(220,80,80,0.25); color: #e07070; }
+
+        /* EMPTY */
+        .empty { text-align: center; color: #4a6a8a; padding: 40px 0; font-size: 14px; }
+        .empty .icon { font-size: 40px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <h1>📝 To-Do List</h1>
+    <p class="header-sub">Stay on top of your tasks</p>
+
+    <!-- STATS -->
+    <div class="stats">
+        <div class="stat-box">
+            <div class="num">{{ total }}</div>
+            <div class="lbl">Total</div>
+        </div>
+        <div class="stat-box">
+            <div class="num">{{ active }}</div>
+            <div class="lbl">Active</div>
+        </div>
+        <div class="stat-box">
+            <div class="num">{{ completed }}</div>
+            <div class="lbl">Done</div>
+        </div>
+    </div>
+
+    <!-- ADD TASK FORM -->
+    <div class="add-form">
+        <h2>+ Add New Task</h2>
+        <form method="POST" action="{% url 'add_task' %}">
+            {% csrf_token %}
+            <div class="form-row">
+                <input type="text" name="title" placeholder="What needs to be done?" required autofocus>
+                <select name="priority">
+                    <option value="low">🟢 Low</option>
+                    <option value="medium" selected>🟡 Medium</option>
+                    <option value="high">🔴 High</option>
+                </select>
+                <button type="submit" class="btn-add">Add</button>
+            </div>
+            <textarea name="description" placeholder="Optional description..."></textarea>
+        </form>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="filters">
+        <a href="?filter=all"       class="filter-btn {% if filter_by == 'all' %}active{% endif %}">All ({{ total }})</a>
+        <a href="?filter=active"    class="filter-btn {% if filter_by == 'active' %}active{% endif %}">Active ({{ active }})</a>
+        <a href="?filter=completed" class="filter-btn {% if filter_by == 'completed' %}active{% endif %}">Done ({{ completed }})</a>
+        {% if completed > 0 %}
+        <a href="{% url 'clear_completed' %}" class="btn-clear">🗑 Clear Done</a>
+        {% endif %}
+    </div>
+
+    <!-- TASK LIST -->
+    <div class="task-list">
+        {% for task in tasks %}
+        <div class="task-item priority-{{ task.priority }} {% if task.completed %}done{% endif %}">
+
+            <!-- Toggle checkbox -->
+            <form method="POST" action="{% url 'toggle_task' task.id %}">
+                {% csrf_token %}
+                <input type="checkbox" class="task-check"
+                       {% if task.completed %}checked{% endif %}
+                       onchange="this.closest('form').submit()">
+            </form>
+
+            <!-- Task body -->
+            <div class="task-body">
+                <div class="task-title">{{ task.title }}</div>
+                {% if task.description %}
+                <div class="task-desc">{{ task.description }}</div>
+                {% endif %}
+                <div class="task-meta">
+                    <span class="badge badge-{{ task.priority }}">{{ task.priority }}</span>
+                    <span class="task-date">{{ task.created_at|slice:":10" }}</span>
+                </div>
+            </div>
+
+            <!-- Edit & Delete -->
+            <div class="task-actions">
+                <a href="{% url 'edit_task' task.id %}" class="btn-icon" title="Edit">✏️</a>
+                <form method="POST" action="{% url 'delete_task' task.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-icon del" title="Delete"
+                            onclick="return confirm('Delete this task?')">🗑</button>
+                </form>
+            </div>
+
+        </div>
+        {% empty %}
+        <div class="empty">
+            <div class="icon">✅</div>
+            <p>No tasks here. Add one above!</p>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Task</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #e0e0e0;
+        }
+        .card {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 16px;
+            padding: 32px;
+            width: 100%;
+            max-width: 480px;
+        }
+        h2 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 22px;
+        }
+        label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: #7a9abf;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+        input, select, textarea {
+            width: 100%;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-family: inherit;
+            font-size: 14px;
+            padding: 10px 12px;
+            outline: none;
+            margin-bottom: 16px;
+            transition: border-color 0.2s;
+        }
+        input:focus, select:focus, textarea:focus { border-color: #5b9bd5; }
+        select option { background: #1a1a2e; }
+        textarea { resize: vertical; min-height: 80px; }
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 4px;
+        }
+        .btn-save {
+            flex: 1;
+            background: #5b9bd5;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 11px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-save:hover { background: #4a88c0; }
+        .btn-cancel {
+            flex: 1;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            color: #9ab8d5;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .btn-cancel:hover { background: rgba(255,255,255,0.12); }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h2>✏️ Edit Task</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label>Title</label>
+        <input type="text" name="title" value="{{ task.title }}" required>
+
+        <label>Description</label>
+        <textarea name="description">{{ task.description }}</textarea>
+
+        <label>Priority</label>
+        <select name="priority">
+            <option value="low"    {% if task.priority == 'low' %}selected{% endif %}>🟢 Low</option>
+            <option value="medium" {% if task.priority == 'medium' %}selected{% endif %}>🟡 Medium</option>
+            <option value="high"   {% if task.priority == 'high' %}selected{% endif %}>🔴 High</option>
+        </select>
+
+        <div class="btn-row">
+            <button type="submit" class="btn-save">Save Changes</button>
+            <a href="{% url 'index' %}" class="btn-cancel">Cancel</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
