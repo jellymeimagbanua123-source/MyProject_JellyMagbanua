@@ -1,0 +1,507 @@
+manhwa.json
+[
+    {
+        "id": 1,
+        "title": "Solo Leveling",
+        "author": "Chugong",
+        "artist": "DUBU",
+        "genre": ["Action", "Fantasy", "Adventure"],
+        "status": "Completed",
+        "chapters": 179,
+        "rating": 9.8,
+        "year": 2018,
+        "description": "In a world where hunters fight monsters in dungeons, the weakest hunter Sung Jinwoo discovers a mysterious system that allows him to level up without limits.",
+        "cover": "https://m.media-amazon.com/images/I/81SH7LCIREBL._AC_UF1000,1000_QL80_.jpg"
+    },
+    {
+        "id": 2,
+        "title": "Tower of God",
+        "author": "SIU",
+        "artist": "SIU",
+        "genre": ["Action", "Fantasy", "Mystery"],
+        "status": "Ongoing",
+        "chapters": 600,
+        "rating": 9.2,
+        "year": 2010,
+        "description": "A boy named Twenty-Fifth Bam enters a mysterious tower to chase his only friend Rachel, facing deadly tests on each floor.",
+        "cover": "https://m.media-amazon.com/images/I/71sB8aDwP9L._AC_UF1000,1000_QL80_.jpg"
+    },
+    {
+        "id": 3,
+        "title": "Omniscient Reader",
+        "author": "sing N song",
+        "artist": "Sleepy-C",
+        "genre": ["Action", "Fantasy", "Sci-Fi"],
+        "status": "Completed",
+        "chapters": 551,
+        "rating": 9.5,
+        "year": 2020,
+        "description": "Kim Dokja is the only reader of a web novel that predicted the apocalypse. When reality becomes the story, he uses his knowledge to survive.",
+        "cover": "https://m.media-amazon.com/images/I/71Q5BWUQKBL._AC_UF1000,1000_QL80_.jpg"
+    },
+    {
+        "id": 4,
+        "title": "The Beginning After the End",
+        "author": "TurtleMe",
+        "artist": "Fuyuki23",
+        "genre": ["Action", "Fantasy", "Reincarnation"],
+        "status": "Ongoing",
+        "chapters": 180,
+        "rating": 9.3,
+        "year": 2018,
+        "description": "King Grey, the most powerful mage, is reincarnated into a new world of magic and monsters with his past memories intact.",
+        "cover": "https://m.media-amazon.com/images/I/71kxa7xSRHL._AC_UF1000,1000_QL80_.jpg"
+    },
+    {
+        "id": 5,
+        "title": "Nano Machine",
+        "author": "Han-Joong-Wolya",
+        "artist": "Gumsulgi",
+        "genre": ["Action", "Martial Arts", "Sci-Fi"],
+        "status": "Ongoing",
+        "chapters": 200,
+        "rating": 8.9,
+        "year": 2020,
+        "description": "An orphan in a martial arts cult receives nano machines from a future descendant, giving him superhuman abilities.",
+        "cover": "https://m.media-amazon.com/images/I/71uFWkalNeL._AC_UF1000,1000_QL80_.jpg"
+    },
+    {
+        "id": 6,
+        "title": "Eleceed",
+        "author": "Son Jeho",
+        "artist": "ZHENA",
+        "genre": ["Action", "Comedy", "Superpower"],
+        "status": "Ongoing",
+        "chapters": 270,
+        "rating": 9.0,
+        "year": 2019,
+        "description": "A kind-hearted boy with lightning-fast reflexes joins the world of awakened ability users alongside a secret agent hiding in a cat's body.",
+        "cover": "https://m.media-amazon.com/images/I/71YqQk7JvIL._AC_UF1000,1000_QL80_.jpg"
+    }
+]
+
+index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manhwa Library</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #0d0d0d;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+
+        /* ── HEADER ── */
+        header {
+            background: linear-gradient(135deg, #1a0533, #2d0a5e);
+            padding: 30px 40px;
+            text-align: center;
+            border-bottom: 2px solid #7c3aed;
+        }
+        header h1 {
+            font-size: 36px;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 3px;
+        }
+        header p {
+            color: #a78bfa;
+            font-size: 14px;
+            margin-top: 6px;
+        }
+
+        /* ── SEARCH & FILTER ── */
+        .controls {
+            display: flex;
+            gap: 12px;
+            padding: 24px 40px;
+            flex-wrap: wrap;
+            align-items: center;
+            background: #111;
+            border-bottom: 1px solid #222;
+        }
+        .controls input {
+            flex: 1;
+            min-width: 200px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-size: 14px;
+            padding: 10px 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .controls input:focus { border-color: #7c3aed; }
+        .controls select {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-size: 14px;
+            padding: 10px 14px;
+            outline: none;
+            cursor: pointer;
+        }
+        .controls select option { background: #1a1a1a; }
+        .count {
+            color: #7c3aed;
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* ── GRID ── */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            padding: 30px 40px;
+        }
+
+        /* ── CARD ── */
+        .card {
+            background: #161616;
+            border: 1px solid #222;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.2s, border-color 0.2s;
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: #7c3aed;
+        }
+        .card-top {
+            display: flex;
+            gap: 0;
+        }
+        .card-cover {
+            width: 110px;
+            min-height: 160px;
+            object-fit: cover;
+            flex-shrink: 0;
+            background: #222;
+        }
+        .card-cover-placeholder {
+            width: 110px;
+            min-height: 160px;
+            background: linear-gradient(135deg, #2d0a5e, #1a0533);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            flex-shrink: 0;
+        }
+        .card-info {
+            padding: 14px;
+            flex: 1;
+        }
+        .card-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+        .card-author {
+            font-size: 12px;
+            color: #7c3aed;
+            margin-bottom: 8px;
+        }
+        .card-desc {
+            font-size: 11px;
+            color: #888;
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .card-bottom {
+            padding: 12px 14px;
+            border-top: 1px solid #222;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .genres {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .genre-tag {
+            background: rgba(124,58,237,0.15);
+            border: 1px solid rgba(124,58,237,0.3);
+            color: #a78bfa;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        .card-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+        .rating {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 3px 8px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #fbbf24;
+        }
+        .status {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        .status.completed {
+            background: rgba(16,185,129,0.15);
+            color: #34d399;
+            border: 1px solid rgba(16,185,129,0.3);
+        }
+        .status.ongoing {
+            background: rgba(59,130,246,0.15);
+            color: #60a5fa;
+            border: 1px solid rgba(59,130,246,0.3);
+        }
+        .chapters {
+            font-size: 10px;
+            color: #555;
+        }
+
+        /* ── EMPTY ── */
+        .empty {
+            text-align: center;
+            padding: 60px;
+            color: #444;
+            grid-column: 1 / -1;
+        }
+        .empty .icon { font-size: 48px; margin-bottom: 12px; }
+
+        /* ── FOOTER ── */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #333;
+            font-size: 12px;
+            border-top: 1px solid #1a1a1a;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>📚 MANHWA LIBRARY</h1>
+    <p>Discover the best Korean webtoons and manhwa</p>
+</header>
+
+<div class="controls">
+    <input type="text" id="searchInput" placeholder="🔍  Search by title, author, or genre...">
+    <select id="statusFilter">
+        <option value="all">All Status</option>
+        <option value="Ongoing">Ongoing</option>
+        <option value="Completed">Completed</option>
+    </select>
+    <select id="sortFilter">
+        <option value="rating">Sort by Rating</option>
+        <option value="year">Sort by Year</option>
+        <option value="chapters">Sort by Chapters</option>
+        <option value="title">Sort by Title</option>
+    </select>
+    <span class="count" id="countLabel">Loading...</span>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<footer>
+    Built from <strong>manhwa.json</strong> — Manhwa Library &copy; 2026
+</footer>
+
+<script>
+    // ── JSON data embedded directly (no fetch needed) ──
+    var allManhwa = [
+        {
+            "id": 1,
+            "title": "Solo Leveling",
+            "author": "Chugong",
+            "artist": "DUBU",
+            "genre": ["Action", "Fantasy", "Adventure"],
+            "status": "Completed",
+            "chapters": 179,
+            "rating": 9.8,
+            "year": 2018,
+            "description": "In a world where hunters fight monsters in dungeons, the weakest hunter Sung Jinwoo discovers a mysterious system that allows him to level up without limits.",
+            "cover": "https://placehold.co/110x160/1a0533/a78bfa?text=Solo+Leveling"
+        },
+        {
+            "id": 2,
+            "title": "Tower of God",
+            "author": "SIU",
+            "artist": "SIU",
+            "genre": ["Action", "Fantasy", "Mystery"],
+            "status": "Ongoing",
+            "chapters": 600,
+            "rating": 9.2,
+            "year": 2010,
+            "description": "A boy named Twenty-Fifth Bam enters a mysterious tower to chase his only friend Rachel, facing deadly tests on each floor.",
+            "cover": "https://placehold.co/110x160/0a1533/7ab4fa?text=Tower+of+God"
+        },
+        {
+            "id": 3,
+            "title": "Omniscient Reader",
+            "author": "sing N song",
+            "artist": "Sleepy-C",
+            "genre": ["Action", "Fantasy", "Sci-Fi"],
+            "status": "Completed",
+            "chapters": 551,
+            "rating": 9.5,
+            "year": 2020,
+            "description": "Kim Dokja is the only reader of a web novel that predicted the apocalypse. When reality becomes the story, he uses his knowledge to survive.",
+            "cover": "https://placehold.co/110x160/0a3320/34d399?text=Omniscient+Reader"
+        },
+        {
+            "id": 4,
+            "title": "The Beginning After the End",
+            "author": "TurtleMe",
+            "artist": "Fuyuki23",
+            "genre": ["Action", "Fantasy", "Reincarnation"],
+            "status": "Ongoing",
+            "chapters": 180,
+            "rating": 9.3,
+            "year": 2018,
+            "description": "King Grey, the most powerful mage, is reincarnated into a new world of magic and monsters with his past memories intact.",
+            "cover": "https://placehold.co/110x160/33200a/fbbf24?text=TBATE"
+        },
+        {
+            "id": 5,
+            "title": "Nano Machine",
+            "author": "Han-Joong-Wolya",
+            "artist": "Gumsulgi",
+            "genre": ["Action", "Martial Arts", "Sci-Fi"],
+            "status": "Ongoing",
+            "chapters": 200,
+            "rating": 8.9,
+            "year": 2020,
+            "description": "An orphan in a martial arts cult receives nano machines from a future descendant, giving him superhuman abilities.",
+            "cover": "https://placehold.co/110x160/0a1a33/60a5fa?text=Nano+Machine"
+        },
+        {
+            "id": 6,
+            "title": "Eleceed",
+            "author": "Son Jeho",
+            "artist": "ZHENA",
+            "genre": ["Action", "Comedy", "Superpower"],
+            "status": "Ongoing",
+            "chapters": 270,
+            "rating": 9.0,
+            "year": 2019,
+            "description": "A kind-hearted boy with lightning-fast reflexes joins the world of awakened ability users alongside a secret agent hiding in a cat's body.",
+            "cover": "https://placehold.co/110x160/1a1a0a/facc15?text=Eleceed"
+        }
+    ];
+
+    // render on page load
+    render(allManhwa);
+
+    // ── Render cards ───────────────────────────────────
+    function render(data) {
+        var grid = document.getElementById('grid');
+        document.getElementById('countLabel').textContent = data.length + ' manhwa found';
+
+        if (data.length === 0) {
+            grid.innerHTML = '<div class="empty"><div class="icon">📭</div><p>No manhwa found.</p></div>';
+            return;
+        }
+
+        grid.innerHTML = data.map(function(m) {
+            var genres = m.genre.map(function(g) {
+                return '<span class="genre-tag">' + g + '</span>';
+            }).join('');
+
+            var statusClass = m.status === 'Completed' ? 'completed' : 'ongoing';
+
+            var coverImg = '<img class="card-cover" src="' + m.cover + '" alt="' + m.title + '" onerror="this.src=\'https://placehold.co/110x160/2d0a5e/a78bfa?text=' + encodeURIComponent(m.title.substring(0,8)) + '\'">';
+
+            return '<div class="card">' +
+                '<div class="card-top">' +
+                    coverImg +
+                    '<div class="card-info">' +
+                        '<div class="card-title">' + m.title + '</div>' +
+                        '<div class="card-author">by ' + m.author + '</div>' +
+                        '<div class="card-desc">' + m.description + '</div>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="card-bottom">' +
+                    '<div>' +
+                        '<div class="genres">' + genres + '</div>' +
+                        '<div class="chapters" style="margin-top:6px">📖 ' + m.chapters + ' chapters &nbsp;·&nbsp; ' + m.year + '</div>' +
+                    '</div>' +
+                    '<div class="card-meta">' +
+                        '<div class="rating">⭐ ' + m.rating + '</div>' +
+                        '<div class="status ' + statusClass + '">' + m.status + '</div>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+        }).join('');
+    }
+
+    // ── Filter & Sort ──────────────────────────────────
+    function applyFilters() {
+        var search = document.getElementById('searchInput').value.toLowerCase();
+        var status = document.getElementById('statusFilter').value;
+        var sort   = document.getElementById('sortFilter').value;
+
+        var filtered = allManhwa.filter(function(m) {
+            var matchSearch = m.title.toLowerCase().includes(search) ||
+                              m.author.toLowerCase().includes(search) ||
+                              m.genre.join(' ').toLowerCase().includes(search);
+            var matchStatus = status === 'all' || m.status === status;
+            return matchSearch && matchStatus;
+        });
+
+        filtered.sort(function(a, b) {
+            if (sort === 'rating')   return b.rating - a.rating;
+            if (sort === 'year')     return b.year - a.year;
+            if (sort === 'chapters') return b.chapters - a.chapters;
+            if (sort === 'title')    return a.title.localeCompare(b.title);
+            return 0;
+        });
+
+        render(filtered);
+    }
+
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    document.getElementById('statusFilter').addEventListener('change', applyFilters);
+    document.getElementById('sortFilter').addEventListener('change', applyFilters);
+</script>
+
+</body>
+</html>
+Dockerfile
+FROM nginx:alpine
+COPY . /usr/share/nginx/html
+EXPOSE 80
+
+docker-composer.yml
+version: "3.9"
+
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    restart: always
