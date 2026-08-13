@@ -1,0 +1,160 @@
+app.js
+
+class Employee {
+    constructor(name, employeeID, position, hoursWorked, hourlyRate) {
+        this.name = name;
+        this.employeeID = employeeID;
+        this.position = position;
+        this.hoursWorked = hoursWorked;
+        this.hourlyRate = hourlyRate;
+    }
+
+    calculatePayroll() {
+        const regularHours = Math.min(this.hoursWorked, 40);
+        const overtimeHours = Math.max(this.hoursWorked - 40, 0);
+
+        const regularPay = regularHours * this.hourlyRate;
+        const overtimePay = overtimeHours * this.hourlyRate * 1.5;
+        const grossPay = regularPay + overtimePay;
+
+        const tax = grossPay * 0.10;
+        const sss = grossPay * 0.045;
+        const philhealth = grossPay * 0.025;
+        const pagibig = 100;
+
+        const totalDeductions =
+            tax + sss + philhealth + pagibig;
+
+        const netPay = grossPay - totalDeductions;
+
+        return {
+            regularHours,
+            overtimeHours,
+            regularPay,
+            overtimePay,
+            grossPay,
+            tax,
+            sss,
+            philhealth,
+            pagibig,
+            totalDeductions,
+            netPay
+        };
+    }
+}
+
+module.exports = Employee;
+
+index.js
+
+const { question, close } = require('./input');
+const Employee = require('./app');
+
+async function main() {
+    console.log('================================');
+    console.log('      QZJ EMPLOYEE PAYROLL');
+    console.log('================================');
+
+    const name = await question('Employee Name: ');
+    const employeeID = await question('Employee ID: ');
+    const position = await question('Position: ');
+    const hoursWorked = Number(await question('Hours Worked: '));
+    const hourlyRate = Number(await question('Hourly Rate: P'));
+
+    if (
+        name.trim() === '' ||
+        employeeID.trim() === '' ||
+        position.trim() === '' ||
+        !Number.isFinite(hoursWorked) ||
+        !Number.isFinite(hourlyRate) ||
+        hoursWorked < 0 ||
+        hourlyRate < 0
+    ) {
+        console.log('');
+        console.log('Invalid employee information.');
+        close();
+        return;
+    }
+
+    const employee = new Employee(
+        name,
+        employeeID,
+        position,
+        hoursWorked,
+        hourlyRate
+    );
+
+    const payroll = employee.calculatePayroll();
+
+    console.log('');
+    console.log('========== PAYROLL ==========');
+
+    console.log('Employee Name : ' + employee.name);
+    console.log('Employee ID   : ' + employee.employeeID);
+    console.log('Position      : ' + employee.position);
+
+    console.log('');
+    console.log('---------- EARNINGS ----------');
+    console.log('Regular Hours : ' + payroll.regularHours);
+    console.log('Overtime Hours: ' + payroll.overtimeHours);
+    console.log('Regular Pay   : P' + payroll.regularPay.toFixed(2));
+    console.log('Overtime Pay  : P' + payroll.overtimePay.toFixed(2));
+    console.log('Gross Pay     : P' + payroll.grossPay.toFixed(2));
+
+    console.log('');
+    console.log('--------- DEDUCTIONS ---------');
+    console.log('Tax           : P' + payroll.tax.toFixed(2));
+    console.log('SSS           : P' + payroll.sss.toFixed(2));
+    console.log('PhilHealth    : P' + payroll.philhealth.toFixed(2));
+    console.log('Pag-IBIG      : P' + payroll.pagibig.toFixed(2));
+    console.log('Total Deduct. : P' + payroll.totalDeductions.toFixed(2));
+
+    console.log('');
+    console.log('========== RESULT ===========');
+    console.log('NET PAY       : P' + payroll.netPay.toFixed(2));
+
+    console.log('');
+    console.log('Payroll calculation completed.');
+    console.log('Thank you for using QZJ Payroll System.');
+
+    close();
+}
+
+main();
+
+input.js
+
+const readline = require('node:readline');
+
+const ask = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+function question(message) {
+    return new Promise((resolve) => {
+        ask.question(message, (answer) => {
+            resolve(answer);
+        });
+    });
+}
+
+function close() {
+    ask.close();
+}
+
+module.exports = { question, close };
+
+model.js
+
+class Employee {
+    constructor(name, id, position, hours, rate) {
+        this.name = name;
+        this.id = id;
+        this.position = position;
+        this.hours = hours;
+        this.rate = rate;
+    }
+}
+
+module.exports = Employee;
