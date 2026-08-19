@@ -1,0 +1,64 @@
+routes.json
+{
+  "home": "Welcome to QZT Website! \n1. About \n2. Products \n3. Contact \n4. Exit",
+  "about": "About Us: \nWe are QZT Company based in Iloilo City. We build cool Node JS apps.",
+  "products": "Our Products: \n1. ATM System \n2. Payroll System \n3. Student Records",
+  "contact": "Contact Us: \nEmail: qzt@company.com \nPhone: 0917-123-4567"
+}
+
+router.js
+const routes = require('./routes.json'); // import ang JSON
+
+function getContent(route) {
+    // pass on ang unod sang json into this function
+    if (routes[route]) {
+        return routes[route]; // return ang content base sa key
+    } else {
+        return "404 Error: Route not found. Please try again.";
+    }
+}
+
+module.exports = { getContent }; // export para magamit sa app.js
+
+app.js
+const readline = require('node:readline');
+const { getContent } = require('./router'); // import function from router.js
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+function showMenu() {
+    console.log('\n' + getContent('home'));
+    rl.question('\nChoose a route: ', (choice) => {
+
+        let route = ""; // variable for routing
+
+        // CONDITION NATUN ANG ROUTING - pwede if else or switch
+        // Ini ang pinaka importante nga part for your score
+        switch(choice) {
+            case '1':
+                route = 'about';
+                break;
+            case '2':
+                route = 'products';
+                break;
+            case '3':
+                route = 'contact';
+                break;
+            case '4':
+                console.log('Goodbye!');
+                rl.close();
+                return;
+            default:
+                route = '404'; // invalid
+        }
+
+        console.log('\n--- ' + route.toUpperCase() + ' ---');
+        console.log(getContent(route)); // pass content to console
+        showMenu(); // balik sa menu
+    });
+}
+
+showMenu();
