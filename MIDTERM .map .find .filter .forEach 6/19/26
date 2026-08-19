@@ -1,0 +1,30 @@
+// IRL DATA: 3 lang na Jollibee Crew
+const crew = [
+  { name: "Ate Ana", job: "Cashier", mealsServed: 120 },
+  { name: "Kuya Leo", job: "Fry", mealsServed: 200 },
+  { name: "Bunso", job: "Cashier", mealsServed: 95 }
+];
+
+console.log("🍗 JOLLIBEE NIGHT SHIFT 🍗");
+
+// 1. .map() = Gawing name tag
+const nameTags = crew.map(c => c.name + " - " + c.job);
+console.log("Name Tags:", nameTags);
+// Output: ["Ate Ana - Cashier", "Kuya Leo - Fry", "Bunso - Cashier"]
+
+// 2. .filter() = Piliin ang Cashier lang
+const cashiers = crew.filter(c => c.job === "Cashier");
+console.log("Cashiers:", cashiers.map(c => c.name));
+// Output: ["Ate Ana", "Bunso"]
+
+// 3. .find() = Hanapin ang MVP
+const mvp = crew.find(c => c.mealsServed > 150);
+console.log("MVP:", mvp.name);
+// Output: "Kuya Leo"
+
+// 4. .forEach() = Mag-thank you sa lahat
+crew.forEach(c => console.log("Salamat " + c.name + "!"));
+// Output: 
+// Salamat Ate Ana!
+// Salamat Kuya Leo!
+// Salamat Bunso!
