@@ -1,0 +1,35 @@
+const item = {
+  name: "Notebook",
+  price: 50,
+  category: "School Supply",
+  brand: ["Mongol", "Pilot", "Uniqlo"]
+};
+
+// 1. Destructuring
+const { name, price, category } = item;
+
+// 2. Spread Operator
+const updatedItem = {
+  ...item,
+  stock: 20
+};
+
+// 3. Rest Parameters
+function showBrands(...brands) {
+  return brands.join(", ");
+}
+
+// 4. Template Literals
+console.log(Item: ${name});
+console.log(Price: ₱${price});
+console.log(Category: ${category});
+
+// 5. Optional Chaining
+console.log(Stock: ${updatedItem?.stock});
+
+// 6. Nullish Coalescing
+const discount = updatedItem.discount ?? 0;
+console.log(Discount: ₱${discount});
+
+// Using the Rest Parameter function
+console.log(Brands: ${showBrands(...item.brand)});
