@@ -1,0 +1,119 @@
+main.js 
+
+const { showMenu, getPrice, computeSubtotal, applyDiscount, printReceipt } = require('./cafe');
+
+showMenu();
+
+console.log('Price of latte  : ₱' + getPrice('latte'));
+console.log('Price of matcha : ₱' + getPrice('matcha'));
+console.log('Price of unknown: ₱' + getPrice('juice'));  // returns 0
+
+var order1 = [
+    { item: 'espresso',  qty: 1 },
+    { item: 'croissant', qty: 1 }
+];
+
+var sub1 = computeSubtotal(order1);
+console.log('\nOrder 1 subtotal: ₱' + sub1);
+
+var disc1 = applyDiscount(sub1);
+console.log('Discount applied: ' + disc1.hasDiscount);
+console.log('Total to pay    : ₱' + disc1.totalAfter);
+
+var order2 = [
+    { item: 'latte',    qty: 2 },
+    { item: 'mocha',    qty: 1 },
+    { item: 'sandwich', qty: 1 }
+];
+
+var sub2 = computeSubtotal(order2);
+console.log('\nOrder 2 subtotal: ₱' + sub2);
+
+var disc2 = applyDiscount(sub2);
+console.log('Discount applied: ' + disc2.hasDiscount);
+console.log('Discount amount : ₱' + disc2.discount);
+console.log('Total to pay    : ₱' + disc2.totalAfter);
+
+printReceipt('Mei', order1);
+printReceipt('Joshua', order2);
+
+
+
+cafe.js
+
+const MENU = {
+    espresso:   { price: 60,  category: 'coffee' },
+    latte:      { price: 90,  category: 'coffee' },
+    mocha:      { price: 95,  category: 'coffee' },
+    matcha:     { price: 100, category: 'tea'    },
+    sandwich:   { price: 120, category: 'food'   },
+    croissant:  { price: 85,  category: 'food'   },
+};
+
+function showMenu() {
+    console.log('\n===== CAFE MENU =====');
+    for (var item in MENU) {
+        console.log('  ' + item + ' ............. ₱' + MENU[item].price);
+    }
+    console.log('=====================\n');
+}
+
+function getPrice(item) {
+    if (!MENU[item]) {
+        return 0;
+    }
+    return MENU[item].price;
+}
+
+// order = [{ item: 'latte', qty: 2 }, { item: 'croissant', qty: 1 }]
+function computeSubtotal(order) {
+    var subtotal = 0;
+    order.forEach(function(o) {
+        subtotal += getPrice(o.item) * o.qty;
+    });
+    return subtotal;
+}
+
+// 10% discount if subtotal >= 300
+function applyDiscount(subtotal) {
+    if (subtotal >= 300) {
+        var discount = subtotal * 0.10;
+        return {
+            discount:    discount,
+            totalAfter:  subtotal - discount,
+            hasDiscount: true
+        };
+    }
+    return {
+        discount:    0,
+        totalAfter:  subtotal,
+        hasDiscount: false
+    };
+}
+
+function printReceipt(customerName, order) {
+    var subtotal = computeSubtotal(order);
+    var result   = applyDiscount(subtotal);
+
+    console.log('\n========== RECEIPT ==========');
+    console.log('Customer : ' + customerName);
+    console.log('-----------------------------');
+    order.forEach(function(o) {
+        var lineTotal = getPrice(o.item) * o.qty;
+        console.log('  ' + o.item + ' x' + o.qty + ' = ₱' + lineTotal);
+    });
+    console.log('-----------------------------');
+    console.log('Subtotal : ₱' + subtotal);
+    if (result.hasDiscount) {
+        console.log('Discount : -₱' + result.discount + ' (10% off!)');
+    }
+    console.log('TOTAL    : ₱' + result.totalAfter);
+    console.log('=============================\n');
+}
+module.exports = {
+    showMenu,
+    getPrice,
+    computeSubtotal,
+    applyDiscount,
+    printReceipt
+};
