@@ -1,0 +1,25 @@
+async function DoSomething() {
+    console.log("doing something");
+}
+
+async function DoSomething() {
+    console.log("doing something");
+
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    console.log("order is being prepared");
+}
+
+async function placeFoodOrder() {
+    console.log("Customer placed a food order.");
+
+    const task = DoSomething();
+
+    console.log("Customer can continue browsing the app...");
+
+    await task;
+
+    console.log("Food order processing is finished.");
+}
+
+placeFoodOrder();
