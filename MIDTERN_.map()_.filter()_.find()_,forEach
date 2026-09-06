@@ -1,0 +1,18 @@
+const crew = [
+  { name: "Ate Ana", job: "Cashier", mealsServed: 120 },
+  { name: "Kuya Leo", job: "Fry", mealsServed: 200 },
+  { name: "Bunso", job: "Cashier", mealsServed: 95 }
+];
+
+console.log("🍗 JOLLIBEE NIGHT SHIFT 🍗");
+
+const nameTags = crew.map(c => c.name + " - " + c.job);
+console.log("Name Tags:", nameTags);
+
+const cashiers = crew.filter(c => c.job === "Cashier");
+console.log("Cashiers:", cashiers.map(c => c.name));
+
+const mvp = crew.find(c => c.mealsServed > 150);
+console.log("MVP:", mvp.name);
+
+crew.forEach(c => console.log("Salamat " + c.name + "!"));
