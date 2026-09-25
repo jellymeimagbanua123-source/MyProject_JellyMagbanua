@@ -1,158 +1,96 @@
-<div align="center">
+# 🌸 Bloom & Blossom — Flower Shop E-Commerce
 
-# 💻 C++ Console Project
+A complete flower shop e-commerce website built with Express.js, EJS, Tailwind CSS, and MySQL.
 
-### 👤 Introduce Yourself
+## Tech Stack
 
-A simple C++ console application that displays my personal profile using functions, variables, and formatted console output.
+- **Backend**: Express.js (Node.js)
+- **Templating**: EJS
+- **Styling**: Tailwind CSS via CDN
+- **Database**: MySQL (via XAMPP)
+- **Auth**: express-session + bcrypt
 
-![C++](https://img.shields.io/badge/C%2B%2B-17-blue?style=for-the-badge&logo=cplusplus)
-![Status](https://img.shields.io/badge/Status-Completed-success?style=for-the-badge)
-![Platform](https://img.shields.io/badge/Platform-Console-lightgrey?style=for-the-badge)
+## Setup Instructions
 
-</div>
+### 1. Start XAMPP
+- Start **Apache** and **MySQL** in XAMPP Control Panel.
 
----
+### 2. Create the Database
+- Open **phpMyAdmin** at `http://localhost/phpmyadmin`
+- Click **Import**, select `flower_shop/database.sql`, and run it.
+- This creates the `flower_shop_db` database with tables and sample data.
 
-# 📖 Overview
+### 3. Configure Environment
+- Edit `.env` if needed (default: root user, no password, port 3000).
 
-The **Introduce Yourself** program is a beginner-friendly C++ console application that presents my personal profile in a clean and organized format. It demonstrates the use of functions, variables, conditional statements, and formatted console output while practicing fundamental C++ programming concepts. Well-structured README files like this help explain a project's purpose, features, and usage for others viewing the repository. :contentReference[oaicite:0]{index=0}
-
----
-
-# ✨ Features
-
-✅ Displays my personal profile
-
-✅ Shows my pet preference (Dog or Cat)
-
-✅ Uses a separate function to display information
-
-✅ Clean and organized console output
-
-✅ Beginner-friendly C++ project
-
----
-
-# 📁 Project Structure
-
-```text
-IntroduceYourself_07-30-26
-│
-└── 📄 mee.cpp
-```
-
----
-
-# 📄 File Description
-
-| File | Description |
-|------|-------------|
-| **mee.cpp** | Contains the complete program, including my personal information, display function, and program execution. |
-
----
-
-# 📝 Information Displayed
-
-The program displays the following details:
-
-- 👤 Name
-- 🎂 Birthday
-- 📍 Address
-- 🎵 Favorite Song
-- 💪 Motivation
-- ❤️ Support Message
-- 🐶🐱 Pet Preference
-
----
-
-# 🖥️ Sample Output
-
-```text
---------------------------------------------------
-                 ABOUT ME PROFILE
---------------------------------------------------
-
-Preference : DOG PERSON 🐶
-
---------------------------------------------------
-Name       : Jelly Mei Magbanua
-Birthday   : September 18 2005
-Address    : Iloilo, Philippines
-Fav Song   : Glue Song By Beabadobee
-Motivation : To finish my studies, become successful,
-             and make my family proud.
-Support    : Thank you for providing activities that
-             help us improve our programming skills.
---------------------------------------------------
-Thanks for sharing!
---------------------------------------------------
-```
-
----
-
-# 🛠️ Concepts Used
-
-- ✔ Functions
-- ✔ Variables
-- ✔ Strings
-- ✔ Conditional Statements (`if-else`)
-- ✔ Console Output (`cout`)
-- ✔ Program Organization
-- ✔ Basic C++ Syntax
-
----
-
-# 🚀 Getting Started
-
-## Requirements
-
-- C++ Compiler (G++, MinGW, MSVC, etc.)
-- Visual Studio Code (Recommended)
-
----
-
-## ▶️ Compile
-
+### 4. Install Dependencies
 ```bash
-g++ mee.cpp -o introduce
+npm install
 ```
 
----
-
-## ▶️ Run
-
-### Windows
-
+### 5. Start the Server
 ```bash
-introduce.exe
+npm start
 ```
 
-### Linux / macOS
-
-```bash
-./introduce
-```
+Visit: **http://localhost:3000**
 
 ---
 
-# 🎯 Learning Objectives
+## Default Credentials
 
-This project was created to practice:
+| Role  | Email                      | Password  |
+|-------|----------------------------|-----------|
+| Admin | admin@flowershop.com       | admin123  |
 
-- Basic C++ programming
-- Creating and calling functions
-- Using variables and strings
-- Applying conditional statements
-- Formatting console output
-- Writing organized and readable code
+> The admin password is automatically fixed on server startup using bcrypt.
 
 ---
 
-<div align="center">
+## Features
 
-### 🌟 Thank you for checking out my C++ Project!
+### Customer Side
+- 🌸 Beautiful homepage with hero section and featured products
+- 🛍️ Shop with category filtering, search, and sorting
+- 🌹 Product detail page with related products
+- 🛒 Shopping cart with session persistence
+- 📦 Checkout with shipping address
+- 📋 Order history with status tracking
 
-Made with ❤️ by **Jelly Mei Magbanua** using **C++**
+### Admin Side
+- 📊 Dashboard with stats (revenue, orders, customers, low stock alerts)
+- 💐 Product CRUD (add/edit/delete products with images)
+- 📦 Order management with status updates
+- 👥 User list
 
-</div>
+### Auth
+- 🔐 Register/Login with bcrypt password hashing
+- 🛡️ Session-based authentication
+- ⚙️ Role-based access control (user / admin)
+
+---
+
+## Project Structure
+
+```
+flower_shop/
+├── app.js              # Main Express app
+├── .env                # Environment variables
+├── database.sql        # MySQL schema + seed data
+├── middleware/
+│   ├── auth.js         # requireLogin, requireAdmin
+│   └── cart.js         # Cart session middleware
+├── routes/
+│   ├── index.js        # Homepage
+│   ├── auth.js         # Login/register/logout
+│   ├── shop.js         # Product listing & detail
+│   ├── cart.js         # Cart CRUD
+│   ├── orders.js       # Checkout & order history
+│   └── admin.js        # Admin panel
+├── views/
+│   ├── layout/         # Header & footer partials
+│   ├── admin/          # Admin views
+│   └── *.ejs           # Customer views
+└── public/
+    └── css/style.css   # Custom CSS
+```
