@@ -1,158 +1,129 @@
-<div align="center">
+# 🎓 AttendEase — Student Attendance System
 
-# 💻 C++ Console Project
-
-### 👤 Introduce Yourself
-
-A simple C++ console application that displays my personal profile using functions, variables, and formatted console output.
-
-![C++](https://img.shields.io/badge/C%2B%2B-17-blue?style=for-the-badge&logo=cplusplus)
-![Status](https://img.shields.io/badge/Status-Completed-success?style=for-the-badge)
-![Platform](https://img.shields.io/badge/Platform-Console-lightgrey?style=for-the-badge)
-
-</div>
+A web application for managing student attendance built with **Express.js**, **MongoDB**, and **EJS** with a **Claymorphism** UI.
 
 ---
 
-# 📖 Overview
+## Tech Stack
 
-The **Introduce Yourself** program is a beginner-friendly C++ console application that presents my personal profile in a clean and organized format. It demonstrates the use of functions, variables, conditional statements, and formatted console output while practicing fundamental C++ programming concepts. Well-structured README files like this help explain a project's purpose, features, and usage for others viewing the repository. :contentReference[oaicite:0]{index=0}
-
----
-
-# ✨ Features
-
-✅ Displays my personal profile
-
-✅ Shows my pet preference (Dog or Cat)
-
-✅ Uses a separate function to display information
-
-✅ Clean and organized console output
-
-✅ Beginner-friendly C++ project
+| Layer | Technology | Why |
+|-------|-----------|-----|
+| Backend | Express.js (Node.js) | Lightweight REST/web server with middleware support |
+| Database | MongoDB (Mongoose) | Flexible document model fits attendance records well |
+| Templating | EJS | Server-side rendering with dynamic data |
+| Auth | express-session + bcrypt | Secure session-based authentication |
+| Session Store | connect-mongo | Sessions persisted IN MongoDB — survives restarts |
 
 ---
 
-# 📁 Project Structure
+## Why MongoDB?
 
-```text
-IntroduceYourself_07-30-26
-│
-└── 📄 mee.cpp
-```
+Attendance records are document-oriented — each record is a self-contained object with student reference, date, subject, status, and remarks. MongoDB's flexible schema allows adding new fields (e.g., geolocation, photo) without schema migration. The `populate()` method handles the student reference efficiently. Three collections are used:
 
----
-
-# 📄 File Description
-
-| File | Description |
-|------|-------------|
-| **mee.cpp** | Contains the complete program, including my personal information, display function, and program execution. |
+- **users** — teacher and admin accounts
+- **students** — enrolled student records
+- **attendances** — one document per student per subject per day
 
 ---
 
-# 📝 Information Displayed
+## Express Middleware Used
 
-The program displays the following details:
+### 1. `middleware/logger.js` — Request Logger
+- Registered globally: `app.use(logger)`
+- Runs on **every** incoming request
+- Logs: timestamp, HTTP method, URL, and session user (or 'guest')
+- Calls `next()` to pass control to the route handler
 
-- 👤 Name
-- 🎂 Birthday
-- 📍 Address
-- 🎵 Favorite Song
-- 💪 Motivation
-- ❤️ Support Message
-- 🐶🐱 Pet Preference
+### 2. `middleware/auth.js` — Authentication Guard
+- `requireLogin` — checks `req.session.user`, redirects to `/login` if missing
+- `requireAdmin` — checks `req.session.user.role === 'admin'`
+- Mounted on specific routers: `router.use(requireLogin)`
 
----
-
-# 🖥️ Sample Output
-
-```text
---------------------------------------------------
-                 ABOUT ME PROFILE
---------------------------------------------------
-
-Preference : DOG PERSON 🐶
-
---------------------------------------------------
-Name       : Jelly Mei Magbanua
-Birthday   : September 18 2005
-Address    : Iloilo, Philippines
-Fav Song   : Glue Song By Beabadobee
-Motivation : To finish my studies, become successful,
-             and make my family proud.
-Support    : Thank you for providing activities that
-             help us improve our programming skills.
---------------------------------------------------
-Thanks for sharing!
---------------------------------------------------
-```
+### 3. `express-session` + `connect-mongo` — Session Middleware
+- Registered in `app.js` before routes
+- Session data stored in MongoDB `sessions` collection
+- `req.session.user` set on login, destroyed on logout
 
 ---
 
-# 🛠️ Concepts Used
+## Session Management
 
-- ✔ Functions
-- ✔ Variables
-- ✔ Strings
-- ✔ Conditional Statements (`if-else`)
-- ✔ Console Output (`cout`)
-- ✔ Program Organization
-- ✔ Basic C++ Syntax
+1. **Login** — bcrypt verifies password → `req.session.user = { _id, name, email, role }` saved
+2. **Every request** — `res.locals.user` populated from session for use in all EJS views
+3. **Protected routes** — `requireLogin` middleware checks session before route handler runs
+4. **Logout** — `req.session.destroy()` clears the session from MongoDB and memory
 
 ---
 
-# 🚀 Getting Started
+## Setup Instructions
 
-## Requirements
+### Prerequisites
+- Node.js 18+
+- MongoDB running locally (default: `mongodb://localhost:27017`)
+- MongoDB Compass (optional, for viewing data)
 
-- C++ Compiler (G++, MinGW, MSVC, etc.)
-- Visual Studio Code (Recommended)
-
----
-
-## ▶️ Compile
-
+### 1. Install dependencies
 ```bash
-g++ mee.cpp -o introduce
+cd attendance_system
+npm install
 ```
 
----
+### 2. Configure environment
+Edit `.env` if needed:
+```
+MONGODB_URI=mongodb://localhost:27017/attendance_db
+SESSION_SECRET=attendance_secret_2024
+PORT=4000
+```
 
-## ▶️ Run
-
-### Windows
-
+### 3. Start the server
 ```bash
-introduce.exe
+npm start
 ```
 
-### Linux / macOS
+Visit: **http://localhost:4000**
 
-```bash
-./introduce
-```
+### 4. Default credentials
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | admin@school.edu | admin123 |
+| Teacher | Register at /register | — |
 
 ---
 
-# 🎯 Learning Objectives
+## MongoDB Compass
 
-This project was created to practice:
+Connect to: `mongodb://localhost:27017`
 
-- Basic C++ programming
-- Creating and calling functions
-- Using variables and strings
-- Applying conditional statements
-- Formatting console output
-- Writing organized and readable code
+Database: `attendance_db`
+
+Collections:
+- `users` — teacher/admin accounts
+- `students` — student records
+- `attendances` — attendance logs (with ObjectId references)
+- `sessions` — active user sessions (managed by connect-mongo)
 
 ---
 
-<div align="center">
+## Project Structure
 
-### 🌟 Thank you for checking out my C++ Project!
-
-Made with ❤️ by **Jelly Mei Magbanua** using **C++**
-
-</div>
+```
+attendance_system/
+├── app.js              # Express app, MongoDB connection, middleware, routes
+├── .env                # Environment variables (NOT committed)
+├── .gitignore
+├── middleware/
+│   ├── auth.js         # requireLogin, requireAdmin
+│   └── logger.js       # Request logger
+├── models/
+│   ├── User.js         # users collection
+│   ├── Student.js      # students collection
+│   └── Attendance.js   # attendances collection
+├── routes/
+│   ├── index.js        # Dashboard
+│   ├── auth.js         # Login/register/logout
+│   ├── students.js     # Student CRUD
+│   ├── attendance.js   # Mark + report
+│   └── admin.js        # Admin panel
+└── views/              # EJS templates (claymorphism UI)
+```
